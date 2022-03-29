@@ -24,13 +24,13 @@ jobs:
 
     - name: StratCheck
       env:
-       account: ${{ secrets.account }}
-       pwd: ${{ secrets.pwd }}
+       account: ${{ secrets.ZJU_USERNAME }}
+       pwd: ${{ secrets.ZJU_PASSWORD }}
        TG_TOKEN: ${{ secrets.TG_TOKEN }}
        CHAT_ID: ${{ secrets.CHAT_ID }}
        lng: ${{ secrets.lng }}
        lat: ${{ secrets.lat }}
-       DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
+       DD_BOT_TOKEN: ${{ secrets.DINGTALK_TOKEN }}
        DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
       run: |
        python3 check.py
