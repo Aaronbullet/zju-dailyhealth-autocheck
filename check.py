@@ -52,8 +52,8 @@ class ZJULogin(object):
     LOGIN_URL = "https://zjuam.zju.edu.cn/cas/login?service=http%3A%2F%2Fservice.zju.edu.cn%2F"
 
     def __init__(self, username, password, delay_run=False):
-        self.username = os.getenv("ACCOUNT")
-        self.password = os.getenv("PWD")
+        self.username = username
+        self.password = password
         self.delay_run = delay_run
         self.sess = requests.Session()
         
