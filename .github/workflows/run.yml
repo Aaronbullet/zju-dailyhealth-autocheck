@@ -7,7 +7,7 @@ on:
   watch:
     types: [ started ]
   schedule:
-    - cron: 23 8  * * *
+    - cron: 45 */10 * * *
 
 jobs:
   healthcheck:
@@ -15,12 +15,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Sync with upstream
+      if: github.repository != 'Dimlitter/zju-dailyhealth-autocheck'
+      continue-on-error: true
+      uses: aormsby/Fork-Sync-With-Upstream-action@v3.2
+      with:
+        upstream_sync_repo: Dimlitter/zju-dailyhealth-autocheck
+        upstream_sync_branch: main
+        target_sync_branch: main
+        target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+        upstream_pull_args: '-s recursive -Xtheirs'
+        
     - name: 'Set python'
       uses: actions/setup-python@v1
       with:
           python-version: '3.8'
     - name: 'Install dependencies'
-      run: python3 -m pip install --upgrade pip|apt-get install pip3|pip3 install requests
+      run: python3 -m pip install --upgrade pip
+
+    - name: 'install libs'
+      run: pip3 install requests
 
     - name: StratCheck
       env:
@@ -32,5 +47,6 @@ jobs:
        lat: ${{ secrets.lat }}
        DD_BOT_TOKEN: ${{ secrets.DINGTALK_TOKEN }}
        DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
-      run: |
-       python3 check.py
+       REMINDERS: ${{ secrets.REMINDERS }}
+       
+      run: python3 check.py
